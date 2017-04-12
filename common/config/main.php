@@ -1,6 +1,6 @@
 <?php
 return [
-    'name' => 'Amur',
+    'name' => 'mecology',
     'language' => 'ru-RU',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'modules' => [
@@ -20,7 +20,7 @@ return [
             'controllerMap' => [
                 //'admin' => 'backend\controllers\UsersController',
                 //'settings' => 'backend\controllers\SettingsController',
-                //'security' => 'backend\controllers\SecurityController',
+                'security' => 'backend\controllers\SecurityController',
             ],
         ],
         'rbac' => 'dektrium\rbac\RbacWebModule',

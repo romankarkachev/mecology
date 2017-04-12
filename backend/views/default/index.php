@@ -3,6 +3,9 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+$this->title = 'Новая компания * | '.Yii::$app->name;
+$this->params['breadcrumbs'][] = ['label' => 'Транспортные компании', 'url' => ['/companies']];
+$this->params['breadcrumbs'][] = 'Новая *';
 ?>
 <div class="site-index">
 

@@ -44,6 +44,13 @@ return [
         'errorHandler' => [
             'errorAction' => 'default/error',
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@backend/views/user',
+                ],
+            ],
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
