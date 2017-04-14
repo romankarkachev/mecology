@@ -44,6 +44,18 @@ class DefaultController extends Controller
     /**
      * @inheritdoc
      */
+    public function beforeAction($action) {
+        if (parent::beforeAction($action)) {
+            if ($action->id == 'error') $this->layout = '//error';
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [

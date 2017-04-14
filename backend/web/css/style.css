@@ -1,4 +1,44 @@
+/* для формирования значков сортировки в таблицах */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: "\f15d";
+}
+
+a.desc:after {
+    content: "\f15e";
+}
+
+.collapse.in {
+    display: block !important;
+}
+
 .navbar-nav .nav-link, .navbar-nav .navbar .dropdown-toggle, .navbar .navbar-nav .dropdown-toggle {
     color: #adadad !important;
     opacity: 1 !important;
+}
+
+.input-group-addon {
+    border-radius: 0;
+}
+
+.btn-lg, .btn-group-lg > .btn {
+    border-radius: 0;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    line-height: 1 !important;
+}
+
+.table td {
+    padding: 0.4rem !important;
 }

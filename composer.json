@@ -24,7 +24,11 @@
         "kartik-v/yii2-datecontrol": "@dev",
         "kartik-v/yii2-widget-select2": "@dev",
         "rmrevin/yii2-fontawesome": "~2.17",
-        "mimicreative/yii2-simple-line-icons": "~1.0"
+        "mimicreative/yii2-simple-line-icons": "~1.0",
+        "romankarkachev/yii2-coreui-admin": "*",
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "moonlandsoft/yii2-phpexcel": "*",
+        "kartik-v/yii2-money": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

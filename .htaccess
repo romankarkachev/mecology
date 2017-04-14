@@ -1,21 +1,21 @@
 Options +FollowSymLinks
 IndexIgnore */*
 RewriteEngine on
- 
+
 # Если запрос начинается с /manage, то заменяем на /backend/web/
 RewriteCond %{REQUEST_URI} ^/manage
 RewriteRule ^manage\/?(.*) /backend/web/$1
- 
+
 # Добавляем другой запрос /frontend/web/$1
 RewriteCond %{REQUEST_URI} !^/(frontend/web|backend/web|manage)
 RewriteRule (.*) /frontend/web/$1
- 
+
 # Если frontend запрос
 RewriteCond %{REQUEST_URI} ^/frontend/web
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /frontend/web/index.php
- 
+
 # Если backend запрос
 RewriteCond %{REQUEST_URI} ^/backend/web
 RewriteCond %{REQUEST_FILENAME} !-f
