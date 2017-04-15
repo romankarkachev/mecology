@@ -10,8 +10,8 @@ use Yii;
  * @property integer $id
  * @property integer $order_id
  * @property integer $hs_id
- * @property integer $weight
- * @property integer $amount
+ * @property string $weight
+ * @property string $amount
  * @property string $formula
  *
  * @property Orders $order
@@ -34,7 +34,8 @@ class OrdersTp extends \yii\db\ActiveRecord
     {
         return [
             [['order_id', 'hs_id', 'weight', 'amount'], 'required'],
-            [['order_id', 'hs_id', 'weight', 'amount'], 'integer'],
+            [['order_id', 'hs_id'], 'integer'],
+            [['weight', 'amount'], 'number'],
             [['formula'], 'string', 'max' => 255],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Orders::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['hs_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fthcdc::className(), 'targetAttribute' => ['hs_id' => 'id']],
@@ -57,6 +58,19 @@ class OrdersTp extends \yii\db\ActiveRecord
             'hsCode' => 'Код ТН ВЭД',
             'hsName' => 'Наименование',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            // перед сохранением (то есть, когда уже успешно пройдена валидация)
+            // если заполнен код тн вэд (несмотря на то, что это поле обязательное)
+            if ($insert && $this->hs != null)
+                // составим формулу, по которой рассчитана сумма
+                $this->formula = Yii::$app->formatter->asDecimal($this->weight / 1000, 2) . ' кг × ' . Yii::$app->formatter->asDecimal($this->hs->hs_ratio) . ' × ' . Yii::$app->formatter->asDecimal($this->hs->hs_rate);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -90,6 +104,6 @@ class OrdersTp extends \yii\db\ActiveRecord
      */
     public function getHsName()
     {
-        return $this->hs != null ? $this->hs->hs_name : '';
+        return $this->hs != null ? ($this->hs->hs_name == null || $this->hs->hs_name == '' ? $this->hs->hs_code : $this->hs->hs_code . ' - ' . $this->hs->hs_name) : '';
     }
 }

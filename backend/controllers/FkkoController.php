@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Fkko;
-use common\models\FkkoSearch;
+use backend\models\FkkoSearch;
 use backend\models\FkkoImport;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

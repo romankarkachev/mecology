@@ -107,10 +107,15 @@ class OrdersController extends Controller
             $dttp = $searchModel->search([$searchModel->formName() => ['order_id' => $model->id]]);
             $dttp->pagination = false;
 
-            return $this->render('update', [
+            $content = $this->render('update', [
                 'model' => $model,
                 'dttp' => $dttp,
             ]);
+
+            // помечаем заявку как прочитанную
+            $model->seen_at = time();
+            $model->save();
+            return $content;
         }
     }
 

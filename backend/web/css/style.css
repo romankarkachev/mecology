@@ -18,6 +18,13 @@ a.desc:after {
     content: "\f15e";
 }
 
+.select2-container--bootstrap .select2-selection {
+    font-family: PTSansCoreUI !important;
+}
+.select2-search__field {
+    font-family: PTSansCoreUI !important;
+}
+
 .collapse.in {
     display: block !important;
 }

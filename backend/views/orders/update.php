@@ -6,7 +6,7 @@ use yii\helpers\HtmlPurifier;
 /* @var $model common\models\Orders */
 /* @var $dttp yii\data\ActiveDataProvider */
 
-$order = '№ ' . $model->id . ' от ' . Yii::$app->formatter->asDate($model->created_at, 'php:d.m.Y');
+$order = 'Заявка № ' . $model->id . ' от ' . Yii::$app->formatter->asDate($model->created_at, 'php:d.m.Y');
 
 $this->title = $order . HtmlPurifier::process(' &mdash; Заявки | ') . Yii::$app->name;
 $this->params['breadcrumbs'][] = ['label' => 'Заявки', 'url' => ['/orders']];

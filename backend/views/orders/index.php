@@ -38,9 +38,15 @@ $this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' 
                         'attribute' => 'created_at',
                         'label' => 'Создано',
                         'format' => ['datetime', 'dd.MM.YYYY HH:mm'],
-                        'headerOptions' => ['class' => 'text-center'],
-                        'contentOptions' => ['class' => 'text-center'],
                         'options' => ['width' => '130'],
+                        'headerOptions' => ['class' => 'text-center'],
+                        'contentOptions' => function ($model, $key, $index, $column) {
+                            /* @var $model \common\models\Orders */
+                            if ($model->seen_at == null)
+                                return ['class' => 'text-center font-weight-bold'];
+                            else
+                                return ['class' => 'text-center'];
+                        },
                     ],
                     'form_company',
                     'form_username',

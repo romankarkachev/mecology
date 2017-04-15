@@ -44,7 +44,7 @@ use backend\components\TotalsColumn;
                     <?= GridView::widget([
                         'dataProvider' => $dttp,
                         'layout' => "{items}",
-                        'tableOptions' => ['class' => 'table table-striped table-hover'],
+                        'tableOptions' => ['class' => 'table table-bordered table-sm table-hover'],
                         'showFooter' => true,
                         'footerRowOptions' => ['class' => 'text-center font-weight-bold'],
                         'columns' => [
@@ -57,13 +57,13 @@ use backend\components\TotalsColumn;
                             [
                                 'attribute' => 'hsName',
                                 'headerOptions' => ['class' => 'text-center'],
-                                'contentOptions' => ['class' => 'text-center'],
                                 'footer' => 'Итого:',
                                 'footerOptions' => ['class' => 'text-right'],
                             ],
                             [
                                 'class' => TotalsColumn::className(),
                                 'attribute' => 'weight',
+                                'format' => ['decimal', 'decimals' => 2],
                                 'options' => ['width' => '90'],
                                 'headerOptions' => ['class' => 'text-center'],
                                 'contentOptions' => ['class' => 'text-right'],

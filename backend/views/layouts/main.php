@@ -4,20 +4,21 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use romankarkachev\widgets\Alert;
-use romankarkachev\widgets\Sidebar;
-use romankarkachev\widgets\Breadcrumbs;
-//use yii\widgets\Breadcrumbs;
+use romankarkachev\coreui\widgets\Alert;
+use romankarkachev\coreui\widgets\Sidebar;
+use romankarkachev\coreui\widgets\Breadcrumbs;
 use backend\assets\AppAsset;
 
 AppAsset::register($this);
 
-romankarkachev\web\CoreUIAsset::register($this);
+romankarkachev\coreui\CoreUIAsset::register($this);
 
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/romankarkachev/yii2-coreui-admin/src');
-
+$orders_label = 'Заявки';
+// количество новых заявок
+$new_orders_count = \common\models\Orders::find()->where(['seen_at' => null])->count();
+if ($new_orders_count > 0) $orders_label .= ' <span class="badge badge-info">' . $new_orders_count . '</span>';
 $items = [
-    ['label' => 'Заявки', 'icon' => 'fa fa-address-book-o', 'url' => ['/orders']],
+    ['label' => $orders_label, 'icon' => 'fa fa-address-book-o', 'url' => ['/orders']],
     [
         'label' => 'Справочники',
         'url' => '#',
@@ -36,10 +37,10 @@ $items = [
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <?= $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => $directoryAsset . '/img/favicon.png']) ?>
+    <?= $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/favicon.png']) ?>
     <?php $this->head() ?>
 </head>
-<body class="app header-fixed sidebar-hidden">
+<body class="app header-fixed<?= $new_orders_count == 0 ? ' sidebar-hidden' : '' ?>">
 <?php $this->beginBody() ?>
     <header class="app-header navbar">
         <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">☰</button>

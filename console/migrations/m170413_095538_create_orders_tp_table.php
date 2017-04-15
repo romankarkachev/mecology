@@ -21,8 +21,8 @@ class m170413_095538_create_orders_tp_table extends Migration
             'id' => $this->primaryKey(),
             'order_id' => $this->integer()->notNull()->comment('Заявка'),
             'hs_id' => $this->integer()->notNull()->comment('Код ТН ВЭД'),
-            'weight' => $this->integer()->notNull()->comment('Вес, кг'),
-            'amount' => $this->integer()->notNull()->comment('Сумма'),
+            'weight' => $this->decimal(12,2)->notNull()->comment('Вес, кг'),
+            'amount' => $this->decimal(12,2)->notNull()->comment('Сумма'),
             'formula' => $this->string()->comment('Формула расчета'),
         ], $tableOptions);
 

@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'homeUrl' => 'http://mecology.ru',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -46,7 +47,6 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '' => 'default/index',
                 '<action:\w+>' => 'default/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],

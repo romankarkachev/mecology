@@ -20,6 +20,7 @@ class m170413_095532_create_orders_table extends Migration
         $this->createTable('orders', [
             'id' => $this->primaryKey(),
             'created_at' => $this->integer()->notNull()->comment('Дата и время создания'),
+            'seen_at' => $this->integer()->comment('Дата и время ознакомления с заявкой'),
             'form_company' => $this->string(50)->comment('Компания'),
             'form_username' => $this->string(50)->comment('Имя'),
             'form_phone' => $this->string(50)->comment('Телефон'),

@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\FkkoSearch */
+/* @var $searchModel frontend\models\FkkoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchApplied bool */
 
@@ -49,12 +49,22 @@ $this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' 
                     [
                         'attribute' => 'fkko_code',
                         'label' => 'Код-2014',
+                        'headerOptions' => ['class' => 'text-center'],
+                        'contentOptions' => ['class' => 'text-center'],
                     ],
                     'fkko_name:ntext',
-                    'fkko_date:date',
+                    [
+                        'attribute' => 'fkko_date',
+                        'label' => 'Дата внесения',
+                        'format' => 'date',
+                        'headerOptions' => ['class' => 'text-center'],
+                        'contentOptions' => ['class' => 'text-center'],
+                    ],
                     [
                         'attribute' => 'fkko2002_code',
                         'label' => 'Код-2002',
+                        'headerOptions' => ['class' => 'text-center'],
+                        'contentOptions' => ['class' => 'text-center'],
                     ],
                     [
                         'class' => 'backend\components\grid\ActionColumn',
