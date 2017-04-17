@@ -73,6 +73,9 @@ return result.text;
                     'name' => $formname . '[tp]['.$counter.'][weight]',
                     'value' => $model->weight == null ? 0 : $model->weight,
                     'id' => $tp_formname_lowcase . '-weight-'.$counter,
+                    'pluginOptions' => [
+                        'precision' => 0,
+                    ],
                     'options' => [
                         'class' => 'input-sm',
                         'data-counter' => $counter,
@@ -87,24 +90,33 @@ return result.text;
         <div class="col-md-2">
             <div class="form-group field-<?= $tp_formname_lowcase ?>-hs_ratio">
                 <label class="control-label" for="<?= $tp_formname_lowcase ?>-hs_ratio">Норматив</label>
-                <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_ratio]', $model->hs_id != null ? $model->hs->hs_ratio : null, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_ratio-'.$counter]) ?>
+                <div class="input-group">
+                    <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_ratio]', $model->hs_id != null ? $model->hs->hs_ratio : null, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_ratio-'.$counter, 'aria-describedby' => 'ig-addon-hs_ratio']) ?>
 
+                    <span class="input-group-addon" id="ig-addon-hs_ratio"><i class="fa fa-rub" aria-hidden="true"></i></span>
+                </div>
                 <p class="help-block help-block-error"></p>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group field-<?= $tp_formname_lowcase ?>-hs_rate">
                 <label class="control-label" for="<?= $tp_formname_lowcase ?>-hs_rate">Ставка за т</label>
-                <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_rate]', $model->hs_id != null ? $model->hs->hs_rate : null, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_rate-'.$counter]) ?>
+                <div class="input-group">
+                    <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_rate]', $model->hs_id != null ? $model->hs->hs_rate : null, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_rate-'.$counter, 'aria-describedby' => 'ig-addon-hs_rate']) ?>
 
+                    <span class="input-group-addon" id="ig-addon-hs_rate"><i class="fa fa-rub" aria-hidden="true"></i></span>
+                </div>
                 <p class="help-block help-block-error"></p>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group field-<?= $tp_formname_lowcase ?>-amount">
                 <label class="control-label" for="<?= $tp_formname_lowcase ?>-amount"><?= $model->attributeLabels()['amount'] ?></label>
-                <?= Html::input('text', $formname . '[tp]['.$counter.'][amount]', $model->amount, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-amount-'.$counter]) ?>
+                <div class="input-group">
+                    <?= Html::input('text', $formname . '[tp]['.$counter.'][amount]', $model->amount, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-amount-'.$counter, 'aria-describedby' => 'ig-addon-amount']) ?>
 
+                    <span class="input-group-addon" id="ig-addon-amount"><i class="fa fa-rub" aria-hidden="true"></i></span>
+                </div>
                 <p class="help-block help-block-error"></p>
             </div>
         </div>

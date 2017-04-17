@@ -17,7 +17,7 @@ $this->params['page-header'] = 'Калькулятор стоимости обс
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= $form->field($model, 'form_company')->textInput(['placeholder' => 'Название компании']) ?>
 
             <?= $form->field($model, 'form_username')->textInput(['placeholder' => 'Ваше имя']) ?>
@@ -30,7 +30,7 @@ $this->params['page-header'] = 'Калькулятор стоимости обс
 
             <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                 'captchaAction' => 'default/captcha',
-                'template' => '<div class="row"><div class="col-xs-4">{image}</div><div class="col-xs-4">{input}</div></div>',
+                'template' => '<div class="row"><div class="col-xs-5">{image}</div><div class="col-xs-5">{input}</div></div>',
             ])->hint('Нажмите на картинку, чтобы обновить.') ?>
 
             <div class="form-group">
@@ -38,12 +38,19 @@ $this->params['page-header'] = 'Калькулятор стоимости обс
 
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <?php $count = count($model->tp); ?>
             <div id="table-part" class="panel panel-default">
                 <div class="panel-body">
-                    <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Добавить строку', '#', ['id' => 'btn-add-row', 'class' => 'btn btn-default', 'data-count' => $count]) ?>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Добавить строку', '#', ['id' => 'btn-add-row', 'class' => 'btn btn-default', 'data-count' => $count]) ?>
 
+                        </div>
+                        <div class="col-md-7">
+                            <h4 class="pull-right">Сумма: <span id="total_amount">0 р</span></h4>
+                        </div>
+                    </div>
                     <?= $form->field($model, 'tp_errors', ['template' => "{error}"])->staticControl() ?>
 
                     <?php foreach ($model->tp as $index => $tpr): ?>
@@ -87,13 +94,11 @@ function btnAddRowOnClick() {
 // Обработчик щелчка по кнопке Удалить строку.
 //
 function btnDeleteRowClick() {
-    var message = "Удаление строки из табличной части. Продолжить?";
-    var id = $(this).attr("data-id");
-    var counter = $(this).attr("data-counter");
+    counter = $(this).attr("data-counter");
 
-    if (id == undefined) {
+    if (counter != undefined) {
         $("#dtp-row-" + counter).remove();
-        return false;
+        CalculateTotalAmount();
     }
 
     return false;
@@ -119,7 +124,7 @@ function CalculateAmount(row) {
     // номер текущей строки табличной части
     if (row == undefined) row = $(this).attr("data-counter");
     // вес, введенный пользователем, переводим в тонны
-    weight = parseFloat($("#$tp_formname_lowcase-weight-" + row).val()) / 1000;
+    weight = parseFloat($("#$tp_formname_lowcase-weight-" + row).val());
     // норматив
     ratio = parseFloat($("#$tp_formname_lowcase-hs_ratio-" + row).val());
     // ставка за тонну
@@ -128,7 +133,19 @@ function CalculateAmount(row) {
         amount = weight * ratio * rate;
         $("#$tp_formname_lowcase-amount-" + row).val(amount.toFixed(2));
     }
+
+    CalculateTotalAmount();
 } // TpHsOnChange()
+
+function CalculateTotalAmount() {
+    var total_amount = 0;
+    $("input[id ^= '$tp_formname_lowcase-amount']").each(function(index, element) {
+        amount = parseFloat($(this).val());
+        if (!isNaN(amount)) total_amount += amount;
+    });
+    
+    $("#total_amount").text(total_amount.toFixed(2) + " р");
+} // CalculateTotalAmount()
 
 JS
 , yii\web\View::POS_BEGIN);

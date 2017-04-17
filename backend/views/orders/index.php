@@ -50,7 +50,22 @@ $this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' 
                     ],
                     'form_company',
                     'form_username',
-                    'form_phone',
+                    [
+                        'attribute' => 'form_phone',
+                        'value' => function($model, $key, $index, $column) {
+                            /* @var $model \common\models\Orders */
+                            $phone_f = '<нет номера телефона>';
+                            if ($model->form_phone != null && $model->form_phone != '')
+                                if (preg_match('/^(\d{3})(\d{3})(\d{2})(\d{2})$/', $model->form_phone, $matches)) {
+                                    $phone_f = '+7 ('.$matches[1].') '.$matches[2].'-'.$matches[3].'-'.$matches[4];
+                                }
+                                else
+                                    // не удалось преобразовать в человеческий вид - отображаем как есть
+                                    $phone_f = $model->form_phone;
+
+                            return $phone_f;
+                        }
+                    ],
                     'form_email:email',
                     [
                         'class' => 'backend\components\grid\ActionColumn',

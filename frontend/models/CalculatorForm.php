@@ -121,6 +121,8 @@ class CalculatorForm extends Model
             foreach ($this->tp as $item) {
                 $dtp = new OrdersTp();
                 $dtp->attributes = $item;
+                // из-за особенностей виджета, домножаем на 1000 введенный вес
+                $dtp->weight = $dtp->weight * 1000;
                 $result[] = $dtp;
             }
         }

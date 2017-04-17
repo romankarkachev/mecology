@@ -87,6 +87,21 @@ class Orders extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            // удалим табличную часть
+            OrdersTp::deleteAll(['order_id' => $this->id]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getOrdersTps()

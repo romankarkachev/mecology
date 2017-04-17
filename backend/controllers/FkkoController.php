@@ -161,7 +161,7 @@ class FkkoController extends Controller
 
                     // выборка существующих позиций номенклатуры для исключения создания дубликатов
                     // в процессе выполнения цикла пополняется
-                    $exists_nom = Fkko::find()->select('fkko_name')->orderBy('fkko_name')->column();
+                    $exists_nom = Fkko::find()->select('fkko_code')->orderBy('fkko_code')->column();
 
                     // перебираем массив и создаем новые элементы
                     $errors_import = array(); // массив для ошибок при импорте
@@ -174,15 +174,23 @@ class FkkoController extends Controller
                             continue;
                         }
 
+                        // преобразуем код в человеческий вид
+                        $fkko = $row['fkko'];
+                        $fkko = str_replace(chr(194).chr(160), '', $fkko);
+                        $fkko = str_replace(' ', '', $fkko);
+                        $fkko = str_replace("\r\n", '', $fkko);
+                        $fkko = str_replace("\n", '', $fkko);
+
                         // преобразуем наименование в человеческий вид
                         $name = FkkoImport::cleanName($row['name']);
 
                         // проверка на существование
-                        if (in_array($name, $exists_nom)) {
-                            $errors_import[] = 'Обнаружен дубликат: ' . $name . '. Пропущен.';
-                            $row_number++;
-                            continue;
-                        }
+                        // отключена, потому что группы и элементы могут быть похожими
+//                        if (in_array($fkko, $exists_nom)) {
+//                            $errors_import[] = 'Обнаружен дубликат: ' . $fkko . '. Пропущен.';
+//                            $row_number++;
+//                            continue;
+//                        }
 
                         // пустые наименования и бессмысленные пропускаем
                         if ($name == '' || $name == '...') {
@@ -196,18 +204,17 @@ class FkkoController extends Controller
                         $new_record->src_name = trim($row['name']);
                         $new_record->src_fkko = trim($row['fkko']);
 
-                        $fkko = $row['fkko'];
-                        $fkko = str_replace(chr(194).chr(160), '', $fkko);
-                        $fkko = str_replace(' ', '', $fkko);
-
                         // ФККО-2014
                         $new_record->fkko_code = $fkko;
                         $new_record->fkko_name = $name;
-                        $new_record->fkko_date = FkkoImport::transformDate(trim($row['date']));
+                        $date2014 = trim($row['date']);
+                        if ($date2014 != '') $new_record->fkko_date = FkkoImport::transformDate($date2014);
 
                         // ФККО-2002
-                        $new_record->fkko2002_code = trim($row['fkko2002']);
-                        $new_record->fkko2002_name = trim($row['name2002']);
+                        $fkko2002 = trim($row['fkko2002']);
+                        $name2002 = trim($row['name2002']);
+                        if ($fkko2002 != '') $new_record->fkko2002_code = $fkko2002;
+                        if ($name2002 != '') $new_record->fkko2002_name = $name2002;
 
                         // класс опасности
                         $new_record->fkko_dc = FkkoImport::DangerClassRep(substr(trim($fkko), -1));
@@ -219,7 +226,7 @@ class FkkoController extends Controller
                                     $details .= '<p>'.$detail.'</p>';
                             $errors_import[] = 'В строке '.$row_number.' не удалось сохранить новый элемент.'.$details;
                         }
-                        else $exists_nom[] = $new_record->fkko_name;
+                        else $exists_nom[] = $new_record->fkko_code;
 
                         $row_number++;
                     }; // foreach
