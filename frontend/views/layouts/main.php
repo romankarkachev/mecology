@@ -29,7 +29,16 @@ romankarkachev\apoa\ApoaAsset::register($this);
 <div id="wrap">
     <header>
         <div class="container">
-            <div class="logo"> <a href="#."><img  class="img-responsive" src="images/logo.png" alt="" ></a> </div>
+            <div class="logo">
+                <?= Html::a(
+                    Html::img('http://mecology.ru/wp-content/uploads/2017/04/logo-1.png', [
+                        'class' => 'img-responsive',
+                        'title' => 'Перейти на сайт ' . Yii::$app->name,
+                    ]),
+                    Yii::$app->homeUrl
+                ) ?>
+
+            </div>
             <?php
             NavBar::begin();
             $menuItems = [
@@ -37,6 +46,7 @@ romankarkachev\apoa\ApoaAsset::register($this);
                 ['label' => 'Калькулятор', 'url' => ['/default/calculator']],
                 ['label' => 'Конвертер', 'url' => ['/default/converter']],
                 ['label' => 'ФККО', 'url' => ['/default/fkko']],
+                ['label' => '<i class="fa fa-bug" aria-hidden="true"></i> Пожаловаться', 'url' => ['/default/contact']],
             ];
             echo Nav::widget([
                 'encodeLabels' => false,
@@ -80,48 +90,39 @@ romankarkachev\apoa\ApoaAsset::register($this);
             <div class="sub-footer">
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="logo-foot"> <img src="images/logo.png" alt="" > </div>
+                        <div class="logo-foot">
+                            <?=  Html::img('http://mecology.ru/wp-content/uploads/2017/04/logo-1.png', [
+                                'class' => 'img-responsive',
+                            ]) ?>
+
+                        </div>
                     </div>
                     <div class="col-md-6 margin-top-30">
-                        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio semnes
-                            elit Morbi leo risus, porta ac consectetur ac, vestibu lum at eros Nulla vitae elit </p>
+                        <p>ООО &laquo;СОВРЕМЕННЫЕ ЭКОЛОГИЧЕСКИЕ КОМПЛЕКСНЫЕ СТРАТЕГИИ&raquo;</p>
                     </div>
                 </div>
             </div>
             <div class="footer-info">
                 <div class="row">
                     <div class="col-md-4">
-                        <h6>keep in touch</h6>
+                        <h6>всегда на связи</h6>
                         <hr>
                         <ul class="personal-info">
-                            <li><i class="fa fa-map-marker"></i>Address : 44 New Design Street,
-                                Melbourne 005 </li>
-                            <li><i class="fa fa-envelope"></i>Email : info@anous.com</li>
-                            <li><i class="fa fa-phone"></i>Phone : (01) 800 433 633 </li>
-                            <li><i class="fa fa-fax"></i>Fax : (01) 800 854 633 </li>
+                            <li><i class="fa fa-map-marker"></i>Адрес: г. Московский, ул. Хабарова, 2</li>
+                            <li><i class="fa fa-envelope"></i>E-mail: info@mecology.ru</li>
+                            <li><i class="fa fa-phone"></i>Телефон: 8 (499) 704 64 00</li>
+                            <li><i class="fa fa-fax"></i>Факс: 8 (499) 704 64 00</li>
                         </ul>
                     </div>
                     <div class="col-md-2">
-                        <h6>Links</h6>
+                        <h6>Ссылки</h6>
                         <hr>
                         <ul class="links">
-                            <li><a href="#.">Home</a></li>
-                            <li><a href="#.">About us</a></li>
-                            <li><a href="#.">Services</a></li>
-                            <li><a href="#.">Portfolio</a></li>
-                            <li><a href="#.">Blog</a></li>
-                            <li><a href="#.">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2">
-                        <h6>Legal</h6>
-                        <hr>
-                        <ul class="links">
-                            <li><a href="#.">Privacy policy</a></li>
-                            <li><a href="#.">Terms & Condition</a></li>
-                            <li><a href="#.">FAQ</a></li>
-                            <li><a href="#.">Careers</a></li>
-                            <li><a href="#.">Login</a></li>
+                            <li><?= Html::a('mecology.ru', Yii::$app->homeUrl) ?></li>
+                            <li><?= Html::a('Калькулятор', ['/default/calculator']) ?></li>
+                            <li><?= Html::a('Конвертер', ['/default/converter']) ?></li>
+                            <li><?= Html::a('ФККО', ['/default/fkko']) ?></li>
+                            <li><?= Html::a('Пожаловаться', ['/default/contact']) ?></li>
                         </ul>
                     </div>
                 </div>
@@ -130,7 +131,7 @@ romankarkachev\apoa\ApoaAsset::register($this);
     </footer>
     <div class="rights">
         <div class="container">
-            <p>Copyrights &copy; <?= date('Y') ?>  All Rights Reserved </p>
+            <p>&copy; <?= date('Y') ?> ООО &laquo;Современные экологические комплексные стратегии&raquo;. Все права защищены.</p>
         </div>
     </div>
 </div>

@@ -47,6 +47,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'default/index',
                 '<action:\w+>' => 'default/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],

@@ -5,12 +5,12 @@ use Yii;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+use common\models\OrdersTp;
+use common\models\Fthcdc;
 use frontend\models\FkkoSearch;
 use frontend\models\Converter;
 use frontend\models\CalculatorForm;
-use common\models\Orders;
-use common\models\OrdersTp;
-use common\models\Fthcdc;
+use frontend\models\ContactForm;
 
 /**
  * Default controller
@@ -46,6 +46,15 @@ class DefaultController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    /**
+     * Отображает приветственную страницу сайта.
+     * @return string
+     */
+    public function actionIndex()
+    {
+        return $this->render('index');
     }
 
     /**
@@ -142,7 +151,21 @@ class DefaultController extends Controller
                         'headerOptions' => ['class' => 'text-center'],
                         'contentOptions' => ['class' => 'text-center'],
                     ],
-                    'fkko2002_name:ntext',
+                    [
+                        'attribute' => 'fkko2002_name',
+                        'format' => 'ntext',
+                        'contentOptions' => function ($model, $key, $index, $column) {
+                            if ($model->fkko2002_name == null || $model->fkko2002_name == '') return ['class' => 'text-muted'];
+                            return [];
+                        },
+                        'content' => function ($model) {
+                            /* @var $model \common\models\Fkko */
+                            if ($model->fkko2002_name == null || $model->fkko2002_name == '')
+                                return '- отсутствовал -';
+                            else
+                                return $model->fkko2002_name;
+                        },
+                    ],
                 ];
             else
                 $columns = [
@@ -185,5 +208,27 @@ class DefaultController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    /**
+     * Отображает страницу обратной связи (пункт меню "Пожаловаться").
+     * @return mixed
+     */
+    public function actionContact()
+    {
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'Ваше сообщение отправлено.');
+            } else {
+                Yii::$app->session->setFlash('error', 'При отправке сообщения возникла ошибка.');
+            }
+
+            return $this->refresh();
+        } else {
+            return $this->render('contact', [
+                'model' => $model,
+            ]);
+        }
     }
 }
