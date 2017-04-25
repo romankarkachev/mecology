@@ -57,6 +57,12 @@ use backend\components\TotalsColumn;
                             [
                                 'attribute' => 'hsName',
                                 'headerOptions' => ['class' => 'text-center'],
+                                'format' => 'raw',
+                                'value' => function($model, $key, $index, $column) {
+                                    /* @var $model \common\models\Orders */
+                                    /* @var $column \yii\grid\DataColumn */
+                                    return '<p class="mb-0">' . $model->hsName . '</p><small class="text-muted">' . $model->formula . '</small>';
+                                },
                                 'footer' => 'Итого:',
                                 'footerOptions' => ['class' => 'text-right'],
                             ],

@@ -26,7 +26,7 @@ class FthcdcSearch extends Fthcdc
         return [
             [['id', 'hs_group'], 'integer'],
             [['hs_code', 'hs_name', 'searchEntire'], 'safe'],
-            [['hs_ratio', 'hs_rate'], 'number'],
+            [['hs_rate'], 'number'],
         ];
     }
 
@@ -69,11 +69,23 @@ class FthcdcSearch extends Fthcdc
             ],
             'sort' => [
                 'route' => 'fthcdc',
-                'defaultOrder' => ['hs_code' => SORT_ASC]
+                'defaultOrder' => ['hs_code' => SORT_ASC],
+                'attributes' => [
+                    'id',
+                    'hs_code',
+                    'hs_name',
+                    'hs_group',
+                    'fthcdcCurrentRatio' => [
+                        'asc' => ['fthcdc_ratios.hs_ratio' => SORT_ASC],
+                        'desc' => ['fthcdc_ratios.hs_ratio' => SORT_DESC],
+                    ],
+                    'hs_rate',
+                ],
             ]
         ]);
 
         $this->load($params);
+        $query->joinWith(['fthcdcRatiosCurrentYear']);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -85,7 +97,6 @@ class FthcdcSearch extends Fthcdc
         $query->andFilterWhere([
             'id' => $this->id,
             'hs_group' => $this->hs_group,
-            'hs_ratio' => $this->hs_ratio,
             'hs_rate' => $this->hs_rate,
         ]);
 

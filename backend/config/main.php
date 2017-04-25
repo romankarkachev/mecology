@@ -44,6 +44,17 @@ return [
         'errorHandler' => [
             'errorAction' => 'default/error',
         ],
+        // запрещаем bootstrap на корню, у нас свой (из темы coreui)
+        'assetManager' => [
+            'bundles' => [
+                'yii\bootstrap\BootstrapAsset' => [
+                    'sourcePath' => null, 'css' => []
+                ],
+                'yii\bootstrap\BootstrapThemeAsset' => [
+                    'sourcePath' => null, 'css' => []
+                ],
+            ],
+        ],
         'view' => [
             'theme' => [
                 'pathMap' => [

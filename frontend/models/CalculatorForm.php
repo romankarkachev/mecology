@@ -37,11 +37,21 @@ class CalculatorForm extends Model
     public $form_email;
 
     /**
+     * Год, за который запрашиваются нормативы
+     * @var integer
+     */
+    public $year;
+
+    /**
      * Табличная часть
      * @var array
      */
     public $tp;
 
+    /**
+     * Массив ошибок при заполнении табличной части
+     * @var array
+     */
     public $tp_errors;
 
     /**
@@ -75,6 +85,7 @@ class CalculatorForm extends Model
             'form_username' => 'Ваше имя',
             'form_phone' => 'Номер телефона',
             'form_email' => 'E-mail',
+            'year' => 'Год',
             'verifyCode' => 'Введите символы',
         ];
     }
@@ -121,6 +132,7 @@ class CalculatorForm extends Model
             foreach ($this->tp as $item) {
                 $dtp = new OrdersTp();
                 $dtp->attributes = $item;
+                $dtp->hs_ratio = $item['hs_ratio'];
                 // из-за особенностей виджета, домножаем на 1000 введенный вес
                 $dtp->weight = $dtp->weight * 1000;
                 $result[] = $dtp;
@@ -143,6 +155,7 @@ class CalculatorForm extends Model
             foreach ($tp as $row) {
                 $otp = new OrdersTp();
                 $otp->attributes = $row->attributes;
+                $otp->hs_ratio = $row['hs_ratio'];
                 $otp->order_id = $order->id;
                 $otp->save();
             }

@@ -13,7 +13,7 @@ $this->title = 'Коды ТН ВЭД | ' . Yii::$app->name;
 $this->params['breadcrumbs'][] = 'Коды ТН ВЭД';
 
 $this->params['breadcrumbsRight'][] = ['label' => 'Отбор', 'icon' => 'fa fa-filter', 'url' => '#frmSearch', 'data-target' => '#frmSearch', 'data-toggle' => 'collapse', 'aria-expanded' => $searchApplied === true ? 'true' : 'false', 'aria-controls' => 'frmSearch'];
-$this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' => ['/fkko'], 'title' => 'Сбросить отбор и применить сортировку по-умолчанию'];
+$this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' => ['/fthcdc'], 'title' => 'Сбросить отбор и применить сортировку по-умолчанию'];
 ?>
 <div class="fthcdc-list">
     <p>
@@ -60,8 +60,8 @@ $this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' 
                         'contentOptions' => ['class' => 'text-center'],
                     ],
                     [
-                        'attribute' => 'hs_ratio',
-                        'format' => ['decimal', 'decimals' => 2],
+                        'attribute' => 'fthcdcCurrentRatio',
+                        'format' => ['decimal', 'decimals' => 3],
                         'options' => ['width' => '80'],
                         'headerOptions' => ['class' => 'text-center'],
                         'contentOptions' => ['class' => 'text-center'],

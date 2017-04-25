@@ -47,7 +47,14 @@ $this->params['page-header'] = 'Калькулятор стоимости обс
                             <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Добавить строку', '#', ['id' => 'btn-add-row', 'class' => 'btn btn-default', 'data-count' => $count]) ?>
 
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-2">
+                            <?= $form->field($model, 'year')->textInput([
+                                'placeholder' => 'Год для нормативов',
+                                'title' => 'Введите год, за который будут запрошены нормативы'
+                            ])->label(false) ?>
+
+                        </div>
+                        <div class="col-md-5">
                             <h4 class="pull-right">Сумма: <span id="total_amount">0 р</span></h4>
                         </div>
                     </div>

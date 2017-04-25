@@ -44,7 +44,10 @@ $tp_formname_lowcase = $formname_lowcase . 'tp';
                             'url' => Url::to(['fthcdc-list']),
                             'delay' => 250,
                             'dataType' => 'json',
-                            'data' => new JsExpression('function(params) { return {q:params.term, counter: $(this).attr("data-counter")}; }')
+                            'data' => new JsExpression('function(params) { return {
+    q:params.term, counter: $(this).attr("data-counter"), year: parseInt($("#calculatorform-year").val())
+    };
+}')
                         ],
                         'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
                         'templateResult' => new JsExpression('function(result) { return result.text; }'),
@@ -91,7 +94,7 @@ return result.text;
             <div class="form-group field-<?= $tp_formname_lowcase ?>-hs_ratio">
                 <label class="control-label" for="<?= $tp_formname_lowcase ?>-hs_ratio">Норматив</label>
                 <div class="input-group">
-                    <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_ratio]', $model->hs_id != null ? $model->hs->hs_ratio : null, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_ratio-'.$counter, 'aria-describedby' => 'ig-addon-hs_ratio']) ?>
+                    <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_ratio]', $model->hs_ratio, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_ratio-'.$counter, 'aria-describedby' => 'ig-addon-hs_ratio']) ?>
 
                     <span class="input-group-addon" id="ig-addon-hs_ratio"><i class="fa fa-rub" aria-hidden="true"></i></span>
                 </div>

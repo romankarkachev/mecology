@@ -7,6 +7,8 @@ use kartik\money\MaskMoney;
 /* @var $this yii\web\View */
 /* @var $model common\models\Fthcdc */
 /* @var $form yii\bootstrap\ActiveForm */
+
+$label_ratio = $model->attributeLabels()['fthcdcCurrentRatio'] . '-' . date('Y');
 ?>
 
 <div class="fthcdc-form">
@@ -24,7 +26,13 @@ use kartik\money\MaskMoney;
 
                 </div>
                 <div class="col-md-2">
-                    <?= $form->field($model, 'hs_ratio')->widget(MaskMoney::className(), ['options' => ['title' => 'Введите норматив', 'placeholder' => 'Введите норматив']]) ?>
+                    <?= $form->field($model, 'fthcdcCurrentRatio')->widget(MaskMoney::className(), [
+                        'options' => [
+                            'readonly' => true,
+                            'title' => 'Введите норматив',
+                            'placeholder' => 'Введите норматив',
+                        ]
+                    ])->label($label_ratio) ?>
 
                 </div>
                 <div class="col-md-2">

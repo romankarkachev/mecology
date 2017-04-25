@@ -11,6 +11,7 @@ use Yii;
  * @property integer $order_id
  * @property integer $hs_id
  * @property string $weight
+ * @property float $hs_ratio
  * @property string $amount
  * @property string $formula
  *
@@ -19,6 +20,12 @@ use Yii;
  */
 class OrdersTp extends \yii\db\ActiveRecord
 {
+    /**
+     * Норматив, в базе не сохраняется, необходим для составления формулы
+     * @var float
+     */
+    public $hs_ratio;
+
     /**
      * @inheritdoc
      */
@@ -35,7 +42,7 @@ class OrdersTp extends \yii\db\ActiveRecord
         return [
             [['order_id', 'hs_id', 'weight', 'amount'], 'required'],
             [['order_id', 'hs_id'], 'integer'],
-            [['weight', 'amount'], 'number'],
+            [['weight', 'hs_ratio', 'amount'], 'number'],
             [['formula'], 'string', 'max' => 255],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Orders::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['hs_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fthcdc::className(), 'targetAttribute' => ['hs_id' => 'id']],
@@ -52,6 +59,7 @@ class OrdersTp extends \yii\db\ActiveRecord
             'order_id' => 'Заявка',
             'hs_id' => 'Код ТН ВЭД',
             'weight' => 'Вес, кг',
+            'hs_ratio' => 'Норматив',
             'amount' => 'Сумма',
             'formula' => 'Формула расчета',
             // для сортировки
@@ -67,7 +75,7 @@ class OrdersTp extends \yii\db\ActiveRecord
             // если заполнен код тн вэд (несмотря на то, что это поле обязательное)
             if ($insert && $this->hs != null)
                 // составим формулу, по которой рассчитана сумма
-                $this->formula = Yii::$app->formatter->asDecimal($this->weight / 1000, 2) . ' кг × ' . Yii::$app->formatter->asDecimal($this->hs->hs_ratio) . ' × ' . Yii::$app->formatter->asDecimal($this->hs->hs_rate);
+                $this->formula = Yii::$app->formatter->asDecimal($this->weight / 1000, 5) . ' т × ' . Yii::$app->formatter->asDecimal($this->hs_ratio) . ' × ' . Yii::$app->formatter->asDecimal($this->hs->hs_rate);
             return true;
         }
         return false;

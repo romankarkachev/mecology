@@ -26,6 +26,10 @@ $this->params['breadcrumbs'][] = 'Импорт';
             <?php $form = ActiveForm::begin() ?>
 
             <div class="row">
+                <div class="col-md-1">
+                    <?= $form->field($model, 'year')->textInput() ?>
+
+                </div>
                 <div class="col-md-4">
                     <?= $form->field($model, 'importFile')->fileInput()->label(false) ?>
 

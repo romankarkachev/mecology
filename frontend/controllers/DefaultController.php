@@ -73,23 +73,32 @@ class DefaultController extends Controller
 
     /**
      * Функция выполняет поиск кода ТН ВЭД по значению, переданному в параметрах.
-     * @param string $q
+     * @param $q string подстрока для поиска
+     * @param $counter integer счетчик строк табличной части
+     * @param $year integer год, за который запрашиваются нормативы
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function actionFthcdcList($q, $counter = null)
+    public function actionFthcdcList($q, $counter = null, $year = null)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
 
+        if ($year == null || $year == 0) $year = intval(date('Y'));
+        $year = intval($year);
+
         $query = Fthcdc::find()->select([
-            'id',
+            Fthcdc::tableName() . '.id',
             'text' => 'CONCAT(`hs_code`, IF(`hs_name` IS NULL OR `hs_name` = "", "", CONCAT(" - (", `hs_name`, ")")))',
-            'hs_ratio',
+            'hs_ratio' => 'IFNULL(fthcdc_ratios.hs_ratio, 0)',
             'hs_rate',
             $counter . ' AS `counter`',
         ])
+            ->leftJoin('fthcdc_ratios', 'fthcdc_ratios.hs_id = fthcdc.id AND fthcdc_ratios.year = ' . $year)
             ->limit(100)
-            ->orFilterWhere(['like', 'hs_code', $q])
-            ->orFilterWhere(['like', 'hs_name', $q]);
+            ->andFilterWhere([
+                'or',
+                ['like', 'hs_code', $q],
+                ['like', 'hs_name', $q]
+            ]);
 
         return ['results' => $query->asArray()->all()];
     }
@@ -118,6 +127,8 @@ class DefaultController extends Controller
             }
         }
 
+        // по-умолчанию текущий год и пустая табличная часть
+        $model->year = date('Y');
         $model->tp = [new OrdersTp()];
         return $this->render('calculator', [
             'model' => $model,

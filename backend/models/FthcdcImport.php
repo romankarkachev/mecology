@@ -8,6 +8,11 @@ use yii\web\UploadedFile;
 class FthcdcImport extends Model
 {
     /**
+     * @var integer год, на который действуют загружаемые нормативы
+     */
+    public $year;
+
+    /**
      * @var UploadedFile
      */
     public $importFile;
@@ -15,6 +20,7 @@ class FthcdcImport extends Model
     public function rules()
     {
         return [
+            ['year', 'required'],
             [['importFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls,xlsx'],
         ];
     }
@@ -25,6 +31,7 @@ class FthcdcImport extends Model
     public function attributeLabels()
     {
         return [
+            'year' => 'Год',
             'importFile' => 'Файл',
         ];
     }

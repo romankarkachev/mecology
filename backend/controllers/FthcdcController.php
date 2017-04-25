@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\FthcdcRatios;
 use Yii;
 use common\models\Fthcdc;
 use common\models\FthcdcSearch;
@@ -157,6 +158,9 @@ class FthcdcController extends Controller
         $model = new FthcdcImport();
 
         if (Yii::$app->request->isPost) {
+            // дурацкое действие, но что поделать, когда зубная паста недоступна
+            $model->year = Yii::$app->request->post()['FthcdcImport']['year'];
+
             $model->importFile = UploadedFile::getInstance($model, 'importFile');
             $filename = Yii::getAlias('@uploads').'/'.Yii::$app->security->generateRandomString().'.'.$model->importFile->extension;
             if ($model->upload($filename)) {
@@ -170,9 +174,12 @@ class FthcdcController extends Controller
 
                     // выборка существующих позиций номенклатуры для исключения создания дубликатов
                     // в процессе выполнения цикла пополняется
-                    $exists_nom = Fthcdc::find()->select('hs_code')->orderBy('hs_code')->column();
+                    $exists_nom = Fthcdc::find()->select(['fthcdc_ratios.id', 'hs_code', 'hs_ratio'])
+                        ->leftJoin('fthcdc_ratios', 'fthcdc_ratios.hs_id = fthcdc.id AND fthcdc_ratios.year = ' . intval($model->year))
+                        ->orderBy('hs_code')->asArray()->all();
 
                     // перебираем массив и создаем новые элементы
+                    $new_records_count = 0; // массив успешно созданных записей
                     $errors_import = array(); // массив для ошибок при импорте
                     $row_number = 1; // 0-я строка - это заголовок
                     foreach ($data as $row) {
@@ -186,18 +193,39 @@ class FthcdcController extends Controller
                         // преобразуем наименование в человеческий вид
                         $code = trim($row['code']);
 
+                        // преобразуем норматив
+                        $hs_ratio = floatval(str_replace(',', '.', $row['ratio']));
+
                         // проверка на существование
-                        if (in_array($code, $exists_nom)) {
-                            $errors_import[] = 'Обнаружен дубликат: ' . $code . '. Пропущен.';
-                            $row_number++;
-                            continue;
+                        $key = array_search($code, array_column($exists_nom, 'hs_code'));
+                        if ($key !== false) {
+                            // такой код ТН ВЭД уже есть в базе
+                            // проверим, не изменился ли норматив
+                            if (floatval($exists_nom[$key]['hs_ratio']) != $hs_ratio) {
+                                // норматив изменился, произведем обновление норматива
+                                FthcdcRatios::updateAll([
+                                    'hs_ratio' => $hs_ratio,
+                                ], [
+                                    'id' => $exists_nom[$key]['id'],
+                                    'year' => $model->year,
+                                ]);
+
+                                $errors_import[] = 'Обновлен норматив ' . $code . ': ' . $exists_nom[$key]['hs_ratio'] . ' -> ' . $hs_ratio;
+                                $row_number++;
+                                continue;
+                            }
+                            else {
+                                // обнаружен дубликат, норматив совпадает
+                                $row_number++;
+                                continue;
+                            }
                         }
 
+                        // код ТН ВЭД не обнаружен, создаем новый и к нему норматив
                         $new_record = new Fthcdc();
                         $new_record->hs_code = $code;
                         $new_record->hs_group = intval($row['group']);
                         $new_record->hs_name = trim($row['name']);
-                        $new_record->hs_ratio = floatval(str_replace(',', '.', $row['ratio']));
                         $new_record->hs_rate = intval(str_replace(',', '.', $row['rate']));
 
                         if (!$new_record->save()) {
@@ -205,9 +233,25 @@ class FthcdcController extends Controller
                             foreach ($new_record->errors as $error)
                                 foreach ($error as $detail)
                                     $details .= '<p>'.$detail.'</p>';
-                            $errors_import[] = 'В строке '.$row_number.' не удалось сохранить новый элемент.'.$details;
+                            $errors_import[] = 'В строке '.$row_number.' не удалось сохранить новый элемент!'.$details;
                         }
-                        else $exists_nom[] = $new_record->hs_code;
+                        else {
+                            // увеличиваем количество успешно созданных записей
+                            $new_records_count++;
+
+                            $exists_nom[] = $new_record->hs_code;
+                            $ratio = new FthcdcRatios();
+                            $ratio->year = $model->year;
+                            $ratio->hs_id = $new_record->id;
+                            $ratio->hs_ratio = $hs_ratio;
+                            if (!$ratio->save()) {
+                                $details = '';
+                                foreach ($new_record->errors as $error)
+                                    foreach ($error as $detail)
+                                        $details .= '<p>'.$detail.'</p>';
+                                $errors_import[] = 'В строке '.$row_number.' не удалось сохранить норматив!'.$details;
+                            }
+                        }
 
                         $row_number++;
                     }; // foreach
@@ -218,13 +262,20 @@ class FthcdcController extends Controller
                         foreach ($errors_import as $error)
                             $errors .= '<p>'.$error.'</p>';
                         Yii::$app->getSession()->setFlash('error', $errors);
-                    };
+                    } else {
+                        $addition = '';
+                        if ($new_records_count > 0)
+                            $addition = ' Добавлено новых записей: ' . $new_records_count . '.';
+                        Yii::$app->getSession()->setFlash('success', 'Импорт завершен.' . $addition);
+                    }
 
                 }; // count > 0
 
                 return $this->redirect(['/fthcdc']);
             }
         };
+
+        $model->year = date('Y');
 
         return $this->render('import', [
             'model' => $model,
