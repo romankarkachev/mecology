@@ -15,7 +15,7 @@ class FkkoImport extends Model
     public function rules()
     {
         return [
-            [['importFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls,xlsx'],
+            [['importFile'], 'file', 'skipOnEmpty' => false, 'extensions' => ['xls', 'xlsx'], 'checkExtensionByMimeType' => false],
         ];
     }
 

@@ -21,7 +21,7 @@ class FthcdcImport extends Model
     {
         return [
             ['year', 'required'],
-            [['importFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls,xlsx'],
+            [['importFile'], 'file', 'skipOnEmpty' => false, 'extensions' => ['xls', 'xlsx'], 'checkExtensionByMimeType' => false],
         ];
     }
 
