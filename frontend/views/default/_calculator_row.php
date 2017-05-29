@@ -54,6 +54,7 @@ $tp_formname_lowcase = $formname_lowcase . 'tp';
                         'templateSelection' => new JsExpression('function (result) {
 if (!result.id) {return result.text;}
 if (result.hs_ratio != "") $("#' . $tp_formname_lowcase . '-hs_ratio-" + result.counter).val(result.hs_ratio);
+if (result.hs_ratio != "") $("#' . $tp_formname_lowcase . '-hs_ratio-disp-" + result.counter).val(result.hs_ratio * 100);
 if (result.hs_rate != "") $("#' . $tp_formname_lowcase . '-hs_rate-" + result.counter).val(result.hs_rate);
 
 return result.text;
@@ -92,18 +93,19 @@ return result.text;
         </div>
         <div class="col-md-2">
             <div class="form-group field-<?= $tp_formname_lowcase ?>-hs_ratio">
+                <?= Html::input('hidden', $formname . '[tp]['.$counter.'][hs_ratio]', $model->hs_ratio, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_ratio-'.$counter, 'aria-describedby' => 'ig-addon-hs_ratio']) ?>
                 <label class="control-label" for="<?= $tp_formname_lowcase ?>-hs_ratio">Норматив</label>
                 <div class="input-group">
-                    <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_ratio]', $model->hs_ratio, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_ratio-'.$counter, 'aria-describedby' => 'ig-addon-hs_ratio']) ?>
+                    <?= Html::input('text', 'hs_ratio', ($model->hs_ratio * 100), ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_ratio-disp-'.$counter]) ?>
 
-                    <span class="input-group-addon" id="ig-addon-hs_ratio"><i class="fa fa-rub" aria-hidden="true"></i></span>
+                    <span class="input-group-addon" id="ig-addon-hs_ratio">%</span>
                 </div>
                 <p class="help-block help-block-error"></p>
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group field-<?= $tp_formname_lowcase ?>-hs_rate">
-                <label class="control-label" for="<?= $tp_formname_lowcase ?>-hs_rate">Ставка за т</label>
+                <label class="control-label" for="<?= $tp_formname_lowcase ?>-hs_rate">Ставка за тонну</label>
                 <div class="input-group">
                     <?= Html::input('text', $formname . '[tp]['.$counter.'][hs_rate]', $model->hs_id != null ? $model->hs->hs_rate : null, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-hs_rate-'.$counter, 'aria-describedby' => 'ig-addon-hs_rate']) ?>
 
@@ -114,7 +116,7 @@ return result.text;
         </div>
         <div class="col-md-2">
             <div class="form-group field-<?= $tp_formname_lowcase ?>-amount">
-                <label class="control-label" for="<?= $tp_formname_lowcase ?>-amount"><?= $model->attributeLabels()['amount'] ?></label>
+                <label class="control-label" for="<?= $tp_formname_lowcase ?>-amount"><?= $model->attributeLabels()['amount'] ?> экосбора</label>
                 <div class="input-group">
                     <?= Html::input('text', $formname . '[tp]['.$counter.'][amount]', $model->amount, ['class' => 'form-control input-sm', 'readonly' => true, 'id' => $tp_formname_lowcase . '-amount-'.$counter, 'aria-describedby' => 'ig-addon-amount']) ?>
 

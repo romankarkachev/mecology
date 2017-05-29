@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use kartik\select2\Select2;
 
 $this->title = 'Калькулятор экологического сбора | ' . Yii::$app->name;
 $this->params['breadcrumbs'][] = 'Калькулятор';
@@ -30,7 +31,7 @@ $this->params['page-header'] = 'Калькулятор стоимости обс
 
             <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                 'captchaAction' => 'default/captcha',
-                'template' => '<div class="row"><div class="col-xs-5">{image}</div><div class="col-xs-5">{input}</div></div>',
+                'template' => '<div class="row"><div class="col-xs-5">{image}</div><div class="col-md-offset-2 col-xs-5">{input}</div></div>',
             ])->hint('Нажмите на картинку, чтобы обновить.') ?>
 
             <div class="form-group">
@@ -48,9 +49,18 @@ $this->params['page-header'] = 'Калькулятор стоимости обс
 
                         </div>
                         <div class="col-md-2">
-                            <?= $form->field($model, 'year')->textInput([
-                                'placeholder' => 'Год для нормативов',
-                                'title' => 'Введите год, за который будут запрошены нормативы'
+                            <?= $form->field($model, 'year')->widget(Select2::classname(), [
+                                'data' => [
+                                    '2015' => 2015,
+                                    '2016' => 2016,
+                                    '2017' => 2017,
+                                    '2018' => 2018,
+                                ],
+                                'options' => [
+                                    'placeholder' => 'Год для нормативов',
+                                    'title' => 'Введите год, за который будут запрошены нормативы',
+                                ],
+                                'hideSearch' => true,
                             ])->label(false) ?>
 
                         </div>
