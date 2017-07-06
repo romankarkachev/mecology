@@ -6,12 +6,12 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\models\FkkoSearch */
+/* @var $searchModel frontend\models\FkkoConverterSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Поиск по ФККО | ' . Yii::$app->name;
 $this->params['breadcrumbs'][] = 'Поиск по ФККО';
-$this->params['page-header'] = 'Поиск по кодам ФККО-2014';
+$this->params['page-header'] = 'Поиск по кодам ФККО-2017';
 ?>
 <div class="fkko">
     <?php $form = ActiveForm::begin([
@@ -42,19 +42,19 @@ $this->params['page-header'] = 'Поиск по кодам ФККО-2014';
         'columns' => [
             [
                 'attribute' => 'fkko_code',
-                'label' => 'Код-2014',
+                'label' => 'Код-2017',
                 'options' => ['width' => 130],
                 'headerOptions' => ['class' => 'text-center'],
                 'contentOptions' => ['class' => 'text-center'],
             ],
-            [
-                'attribute' => 'fkko_date',
-                'label' => 'Дата внесения',
-                'format' => 'date',
-                'options' => ['width' => 130],
-                'headerOptions' => ['class' => 'text-center'],
-                'contentOptions' => ['class' => 'text-center'],
-            ],
+//            [
+//                'attribute' => 'fkko_date',
+//                'label' => 'Дата внесения',
+//                'format' => 'date',
+//                'options' => ['width' => 130],
+//                'headerOptions' => ['class' => 'text-center'],
+//                'contentOptions' => ['class' => 'text-center'],
+//            ],
             'fkko_name:ntext',
 //            [
 //                'attribute' => 'fkko_dc',

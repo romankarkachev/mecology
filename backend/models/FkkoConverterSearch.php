@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Fkko;
+use common\models\FkkoConverter;
 
 /**
- * FkkoSearch represents the model behind the search form about `common\models\Fkko`.
+ * FkkoConverterSearch represents the model behind the search form about `common\models\FkkoConverter`.
  */
-class FkkoSearch extends Fkko
+class FkkoConverterSearch extends FkkoConverter
 {
     /**
      * Поле отбора для универсального поиска (во всем полям).
@@ -24,8 +24,8 @@ class FkkoSearch extends Fkko
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['fkko_code', 'fkko_name', 'searchEntire'], 'safe'],
+            [['id', 'src_id'], 'integer'],
+            [['fkko_code', 'fkko_name', 'fkko_date', 'fkko_dc', 'fkko2002_code', 'fkko2002_name', 'src_name', 'src_fkko', 'searchEntire'], 'safe'],
         ];
     }
 
@@ -59,15 +59,15 @@ class FkkoSearch extends Fkko
      */
     public function search($params)
     {
-        $query = Fkko::find();
+        $query = FkkoConverter::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 50,
-                'route' => 'fkko',
+                'route' => 'fkko-converter',
             ],
             'sort' => [
-                'route' => 'fkko',
+                'route' => 'fkko-converter',
                 'defaultOrder' => ['fkko_code' => SORT_ASC]
             ]
         ]);
@@ -83,6 +83,8 @@ class FkkoSearch extends Fkko
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'fkko_date' => $this->fkko_date,
+            'src_id' => $this->src_id,
         ]);
 
         if ($this->searchEntire != null)
@@ -90,10 +92,17 @@ class FkkoSearch extends Fkko
                 'or',
                 ['like', 'fkko_code', $this->searchEntire],
                 ['like', 'fkko_name', $this->searchEntire],
+                ['like', 'fkko2002_code', $this->searchEntire],
+                ['like', 'fkko2002_name', $this->searchEntire]
             ]);
         else
             $query->andFilterWhere(['like', 'fkko_code', $this->fkko_code])
-                ->andFilterWhere(['like', 'fkko_name', $this->fkko_name]);
+                ->andFilterWhere(['like', 'fkko_name', $this->fkko_name])
+                ->andFilterWhere(['like', 'fkko_dc', $this->fkko_dc])
+                ->andFilterWhere(['like', 'fkko2002_code', $this->fkko2002_code])
+                ->andFilterWhere(['like', 'fkko2002_name', $this->fkko2002_name])
+                ->andFilterWhere(['like', 'src_name', $this->src_name])
+                ->andFilterWhere(['like', 'src_fkko', $this->src_fkko]);
 
         return $dataProvider;
     }

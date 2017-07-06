@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\FkkoSearch */
+/* @var $model backend\models\FkkoConverterSearch */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $searchApplied bool */
 ?>
 
-<div class="fkko2017-search">
+<div class="fkko-search">
     <?php $form = ActiveForm::begin([
-        'action' => ['/fkko'],
+        'action' => ['/fkko-converter'],
         'method' => 'get',
         'options' => [
             'id' => 'frmSearch',
@@ -28,7 +28,7 @@ use yii\bootstrap\ActiveForm;
             <div class="form-group">
                 <?= Html::submitButton('Выполнить', ['class' => 'btn btn-info']) ?>
 
-                <?= Html::a('Отключить отбор', ['/fkko'], ['class' => 'btn btn-secondary']) ?>
+                <?= Html::a('Отключить отбор', ['/fkko-converter'], ['class' => 'btn btn-secondary']) ?>
 
             </div>
         </div>

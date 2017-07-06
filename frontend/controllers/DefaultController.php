@@ -7,7 +7,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use common\models\OrdersTp;
 use common\models\Fthcdc;
-use frontend\models\FkkoSearch;
+use frontend\models\FkkoConverterSearch;
 use frontend\models\Converter;
 use frontend\models\CalculatorForm;
 use frontend\models\ContactForm;
@@ -170,7 +170,7 @@ class DefaultController extends Controller
                             return [];
                         },
                         'content' => function ($model) {
-                            /* @var $model \common\models\Fkko */
+                            /* @var $model \common\models\FkkoConverter */
                             if ($model->fkko2002_name == null || $model->fkko2002_name == '')
                                 return '- отсутствовал -';
                             else
@@ -212,7 +212,7 @@ class DefaultController extends Controller
      */
     public function actionFkko()
     {
-        $searchModel = new FkkoSearch();
+        $searchModel = new FkkoConverterSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('fkko', [

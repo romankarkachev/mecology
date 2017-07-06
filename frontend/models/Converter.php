@@ -6,12 +6,12 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use common\models\Fkko;
+use common\models\FkkoConverter;
 
 /**
- * Converter represents the model behind the search form about `common\models\Fkko`.
+ * Converter represents the model behind the search form about `common\models\FkkoConverter`.
  */
-class Converter extends Fkko
+class Converter extends FkkoConverter
 {
     /**
      * Режимы поиска.
@@ -101,7 +101,7 @@ class Converter extends Fkko
      */
     public function search($params)
     {
-        $query = Fkko::find();
+        $query = FkkoConverter::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

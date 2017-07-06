@@ -5,17 +5,17 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\FkkoSearch */
+/* @var $searchModel backend\models\FkkoConverterSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchApplied bool */
 
-$this->title = 'Коды ФККО 2017 | ' . Yii::$app->name;
-$this->params['breadcrumbs'][] = 'Коды ФККО 2017';
+$this->title = 'Коды ФККО для конвертера | ' . Yii::$app->name;
+$this->params['breadcrumbs'][] = 'Коды ФККО для конвертера';
 
 $this->params['breadcrumbsRight'][] = ['label' => 'Отбор', 'icon' => 'fa fa-filter', 'url' => '#frmSearch', 'data-target' => '#frmSearch', 'data-toggle' => 'collapse', 'aria-expanded' => $searchApplied === true ? 'true' : 'false', 'aria-controls' => 'frmSearch'];
-$this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' => ['/fkko'], 'title' => 'Сбросить отбор и применить сортировку по-умолчанию'];
+$this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' => ['/fkko-converter'], 'title' => 'Сбросить отбор и применить сортировку по-умолчанию'];
 ?>
-<div class="fkko2017-list">
+<div class="fkko-list">
     <p>
         <?= Html::a('<i class="fa fa-plus-circle"></i> Создать', ['create'], ['class' => 'btn btn-success']) ?>
 
@@ -46,8 +46,26 @@ $this->params['breadcrumbsRight'][] = ['icon' => 'fa fa-sort-amount-asc', 'url' 
                     'disabledListItemSubTagOptions' => ['tag' => 'a', 'class' => 'page-link'],
                 ],
                 'columns' => [
-                    'fkko_code',
+                    [
+                        'attribute' => 'fkko_code',
+                        'label' => 'Код-2014',
+                        'headerOptions' => ['class' => 'text-center'],
+                        'contentOptions' => ['class' => 'text-center'],
+                    ],
                     'fkko_name:ntext',
+                    [
+                        'attribute' => 'fkko_date',
+                        'label' => 'Дата внесения',
+                        'format' => 'date',
+                        'headerOptions' => ['class' => 'text-center'],
+                        'contentOptions' => ['class' => 'text-center'],
+                    ],
+                    [
+                        'attribute' => 'fkko2002_code',
+                        'label' => 'Код-2002',
+                        'headerOptions' => ['class' => 'text-center'],
+                        'contentOptions' => ['class' => 'text-center'],
+                    ],
                     [
                         'class' => 'backend\components\grid\ActionColumn',
                         'header' => 'Действия',

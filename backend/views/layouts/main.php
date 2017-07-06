@@ -23,7 +23,8 @@ $items = [
         'label' => 'Справочники',
         'url' => '#',
         'items' => [
-            ['label' => 'Коды ФККО', 'icon' => 'fa fa-tint', 'url' => ['/fkko']],
+            ['label' => 'Коды ФККО-2017', 'icon' => 'fa fa-tint', 'url' => ['/fkko']],
+            ['label' => 'ФККО конвертер', 'icon' => 'fa fa-tint', 'url' => ['/fkko-converter']],
             ['label' => 'Коды ТН ВЭД', 'icon' => 'fa fa-balance-scale', 'url' => ['/fthcdc']],
         ],
     ],
