@@ -7,7 +7,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use common\models\OrdersTp;
 use common\models\Fthcdc;
-use frontend\models\FkkoConverterSearch;
+use frontend\models\FkkoSearch;
 use frontend\models\Converter;
 use frontend\models\CalculatorForm;
 use frontend\models\ContactForm;
@@ -212,7 +212,7 @@ class DefaultController extends Controller
      */
     public function actionFkko()
     {
-        $searchModel = new FkkoConverterSearch();
+        $searchModel = new FkkoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('fkko', [

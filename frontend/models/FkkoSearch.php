@@ -5,12 +5,12 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\FkkoConverter;
+use common\models\Fkko;
 
 /**
- * FkkoConverterSearch represents the model behind the search form about `common\models\FkkoConverter`.
+ * FkkoSearch represents the model behind the search form about `common\models\FkkoConverter`.
  */
-class FkkoConverterSearch extends FkkoConverter
+class FkkoSearch extends Fkko
 {
     /**
      * Поле отбора для универсального поиска (во всем полям).
@@ -24,8 +24,8 @@ class FkkoConverterSearch extends FkkoConverter
     public function rules()
     {
         return [
-            [['id', 'src_id'], 'integer'],
-            [['fkko_code', 'fkko_name', 'fkko_date', 'fkko_dc', 'fkko2002_code', 'fkko2002_name', 'src_name', 'src_fkko', 'searchEntire'], 'safe'],
+            [['id'], 'integer'],
+            [['fkko_code', 'fkko_name', 'searchEntire'], 'safe'],
         ];
     }
 
@@ -59,7 +59,7 @@ class FkkoConverterSearch extends FkkoConverter
      */
     public function search($params)
     {
-        $query = FkkoConverter::find();
+        $query = Fkko::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -72,14 +72,28 @@ class FkkoConverterSearch extends FkkoConverter
             ]
         ]);
 
+        $this->load($params);
+
         if (!($this->load($params) && $this->validate()) || (empty($this->searchEntire))) {
             // если пользователь ничего не ввел или валидация провалилась с треском, возвращаем пустую выборку
             $query->where('1 <> 1');
             return $dataProvider;
         }
 
-        $query->orFilterWhere(['like', 'fkko_code', $this->searchEntire])
-            ->orFilterWhere(['like', 'fkko_name', $this->searchEntire]);
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+        ]);
+
+        if ($this->searchEntire != null)
+            $query->andFilterWhere([
+                'or',
+                ['like', 'fkko_code', $this->searchEntire],
+                ['like', 'fkko_name', $this->searchEntire],
+            ]);
+        else
+            $query->andFilterWhere(['like', 'fkko_code', $this->fkko_code])
+                ->andFilterWhere(['like', 'fkko_name', $this->fkko_name]);
 
         return $dataProvider;
     }
