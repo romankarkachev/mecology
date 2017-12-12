@@ -120,6 +120,10 @@ class Converter extends FkkoConverter
             return $dataProvider;
         }
 
+        // убираем всевозможные пробелы
+        $this->searchEntire = str_replace(chr(32), '', $this->searchEntire);
+        $this->searchEntire = str_replace(chr(160), '', $this->searchEntire);
+
         switch ($this->searchMode) {
             case self::SEARCH_MODE_2014:
                 $query->orFilterWhere(['like', 'fkko_code', $this->searchEntire])

@@ -85,6 +85,10 @@ class FkkoSearch extends Fkko
             'id' => $this->id,
         ]);
 
+        // убираем всевозможные пробелы
+        $this->searchEntire = str_replace(chr(32), '', $this->searchEntire);
+        $this->searchEntire = str_replace(chr(160), '', $this->searchEntire);
+
         if ($this->searchEntire != null)
             $query->andFilterWhere([
                 'or',
