@@ -86,8 +86,12 @@ class FkkoSearch extends Fkko
         ]);
 
         // убираем всевозможные пробелы
-        $this->searchEntire = str_replace(chr(32), '', $this->searchEntire);
-        $this->searchEntire = str_replace(chr(160), '', $this->searchEntire);
+        // но если в результате манипуляций остались только цифры, значит поиск по коду
+        // пробелы будем убирать, только если поиск по коду
+        $possibleSearchValue = $this->searchEntire;
+        $possibleSearchValue = str_replace(chr(32), '', $possibleSearchValue);
+        $possibleSearchValue = str_replace(chr(160), '', $possibleSearchValue);
+        if (is_numeric($possibleSearchValue)) $this->searchEntire = $possibleSearchValue;
 
         if ($this->searchEntire != null)
             $query->andFilterWhere([
